@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-100 p-6">
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-6">
-        <h1 class="text-2xl font-bold text-center text-gray-800">売上一覧（仮）</h1>
+        <h1 class="text-2xl font-bold text-center text-gray-800">売上一覧</h1>
 
         <?php
         // 仮の売上データ
