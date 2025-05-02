@@ -28,11 +28,13 @@
         <div class="grid grid-cols-4 gap-2">
             <?php
             $buttons = [
-                '7', '8', '9', 'AC',
-                '4', '5', '6', '×',
+                '売上', '計上',
+                '税込','AC','←','÷',
+                '7', '8', '9', '×',
+                '4', '5', '6', '-',
                 '1', '2', '3', '+',
                 '0', '00', '税込', '=',
-                '売上', '計上'
+                
             ];
 
             foreach ($buttons as $btn) {
@@ -43,34 +45,51 @@
         </div>
     </div>
 
-    <script>
-    let display = document.getElementById('display');
 
-    function handleInput(val) {
-        switch(val) {
-            case 'AC':
-                display.value = '';
-                break;
-            case '=':
-                try {
-                    display.value = eval(display.value); // 安全性は後で強化
-                } catch {
-                    display.value = 'エラー';
-                }
-                break;
-            case '税込':
-                display.value = Math.floor(display.value * 1.1);
-                break;
-            case '計上':
-                alert('計上処理（仮）');
-                break;
-            case '売上':
-                window.location.href = 'sales.php';  // ← ここをリンクに変更
-                break;
-            default:
-                display.value += val;
-        }
+<script>
+let display = document.getElementById('display');
+
+function handleInput(val) {
+    switch(val) {
+        case 'AC':
+            display.value = '';
+            break;
+        case '←':
+            display.value = display.value.slice(0, -1);  // 最後の文字を削除
+            break;
+        case '=':
+            try {
+                // 計算式を JavaScript に合うように整形
+                let expression = display.value
+                    .replace(/×/g, '*')
+                    .replace(/＋/g, '+')
+                    .replace(/－/g, '-')   // 必要なら
+                    .replace(/÷/g, '/');  // 必要なら
+                display.value = eval(expression);
+            } catch (e) {
+                display.value = 'エラー';
+            }
+            break;
+        case '税込':
+            try {
+                // × → * に変換して eval で計算
+                let expression = display.value.replace(/×/g, '*');
+                let result = eval(expression);
+                display.value = Math.floor(result * 1.1);
+            } catch {
+                display.value = 'エラー';
+            }
+            break;
+        case '計上':
+            alert('計上処理（仮）');
+            break;
+        case '売上':
+            window.location.href = 'sales.php';
+            break;
+        default:
+            display.value += val;
     }
+}
 </script>
 </body>
 </html>
